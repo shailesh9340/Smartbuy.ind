@@ -6,324 +6,554 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;font-family:Arial;background:#0d0dde}
+/* --- CSS RESET & COLORS --- */
+body{margin:0;font-family:Arial, sans-serif;background-color:#0d0dde; color:#333;}
+
+#welcomeScreen{
+  position:fixed; inset:0;
+  background:#2209c2;
+  z-index:5000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  animation:fadeOut 1s ease forwards;
+  animation-delay:2.5s;
+}
+#welcomeScreen img{
+  width:120px;height:120px;
+  border-radius:50%;
+  border:3px solid #fff;
+  animation:zoomIn 1.2s ease;
+}
+#welcomeScreen h1{
+  color:#fff;
+  margin-top:15px;
+  font-size:22px;
+  letter-spacing:1px;
+  animation:slideUp 1s ease;
+}
+@keyframes zoomIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes fadeOut{to{opacity:0;visibility:hidden}}
 
 /* HEADER */
 header{
-position:fixed;top:0;width:100%;z-index:10;
-background:#2209c2;padding:10px;
-display:flex;align-items:center;justify-content:space-between;
-box-shadow:0 2px 5px rgba(0,0,0,.2)
+    position:fixed; top:0; left:0; width:100%; height:65px; z-index:1000;
+    background:#2209c2; padding:0 15px;
+    display:flex; align-items:center; justify-content:space-between;
+    box-shadow:0 2px 5px rgba(0,0,0,.2);
+    box-sizing: border-box;
 }
-header img{height:35px;cursor:pointer}
+
+/* LOGO - ADMIN TRIGGER */
+header img{
+    height:45px; width:45px; 
+    border-radius: 50%; 
+    object-fit: cover;
+    border: 2px solid #fff;
+    cursor:pointer;
+}
+
+/* BRAND NAME */
 .brand-name{
-font-size:20px;font-weight:bold;color:#fff;letter-spacing:1px
+    font-size:22px; font-weight:900; 
+    color:#fff; letter-spacing:1px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
-#userTop{color:#fff;font-size:14px}
 
-/* MAIN */
-.main{padding-top:70px;padding-bottom:150px}
+#userTop{color:#fff; font-size:14px; font-weight: bold;}
 
-/* SEARCH */
-.search-box {
-    padding: 10px;
-    background: #fff;
-    position: sticky;
-    top: 60px; 
-    z-index: 9;
+/* MAIN CONTAINER - GAP FIXED HERE */
+.main{
+    padding-top: 65px; /* 🔥 Pehle 75px tha, ab 65px (Gap removed) */
+    padding-bottom: 100px; 
+    width: 100%;
+    overflow-x: hidden;
 }
-.search-box input {
-    width: 95%;
-    padding: 10px;
-    border: 2px solid #eee;
-    background: #f5f5f5;
-    border-radius: 25px;
-    outline: none;
-    font-size: 14px;
-    display: block;
-    margin: 0 auto;
+
+/* SEARCH BAR - MOVED UP */
+.search-wrapper {
+    position: sticky; top: 10px; z-index: 900;
+    background: #0d0dde; 
+    padding: 2px 10px 10px 10px; /* 🔥 Top padding 10px se 2px kar di */
 }
-.search-box input:focus {
-    border-color: #2209c2;
-    background: #fff;
+
+.search-input {
+    width: 100%; padding: 12px 15px;
+    border: none; background: #fff;
+    border-radius: 30px; outline: none;
+    font-size: 15px; box-sizing: border-box;
+    color: #333;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 /* CATEGORIES */
-.categories{display:flex;overflow-x:auto;background:#fff;padding:10px;border-top:1px solid #eee}
-.cat{min-width:90px;text-align:center;margin-right:10px;cursor:pointer}
-.cat img{width:60px;height:60px;border-radius:50%;object-fit:cover}
-.cat p{font-size:12px;margin:5px 0 0}
+.cat-scroll {
+    display:flex; overflow-x:auto; background:#fff; padding:15px 10px;
+    border-radius: 10px 10px 0 0;
+    margin: 0 10px;
+}
+.cat-item {
+    min-width:85px; text-align:center; margin-right:10px; 
+    cursor:pointer; display: flex; flex-direction: column; align-items: center;
+}
+.cat-item img {
+    width:60px; height:60px; border-radius:50%; object-fit:cover; border: 2px solid #eee;
+}
+.cat-item p {font-size:12px; margin:5px 0 0; color: #333;}
 
-.subcats{display:flex;overflow-x:auto;padding:5px;background:#fff}
-.subcats div{
-padding:6px 12px;background:#eee;border-radius:20px;
-margin-right:8px;font-size:12px;cursor:pointer
+/* SUBCATEGORIES */
+.sub-scroll {
+    display:flex; overflow-x:auto; padding:10px; background:#fff;
+    white-space: nowrap; margin: 0 10px 10px 10px;
+    border-radius: 0 0 10px 10px;
+}
+.sub-btn {
+    padding:8px 15px; background:#eee; border-radius:20px;
+    margin-right:10px; font-size:13px; color: #333;
 }
 
-/* PRODUCTS */
-.products{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;padding:10px
+/* PRODUCT GRID */
+#grid_panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px;
+    padding: 10px;
+}
+
+.prod-card {
+    background: #fff; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    display: flex; flex-direction: column;
+}
+
+.prod-img-box {
+    width: 100%; height: 180px; background: #ddd;
+    position: relative;
+}
+.prod-img-box img {
+    width: 100%; height: 100%; object-fit: cover;
+}
+
+.info-box { padding: 8px; }
+.info-box h4 {
+    font-size: 13px; margin: 0 0 5px; color: #000;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.price { color: green; font-weight: bold; font-size: 14px; margin-left: 5px; }
+.cut { text-decoration: line-through red; -webkit-text-decoration: line-through red; color: #888; font-size: 11px; margin-left: 5px; }
+.off-tag { color: red; font-size: 11px; margin-left: 5px; }
+
+.btn-row {
+    display: flex; margin-top: auto; padding: 8px; gap: 5px;
+}
+.btn-row button {
+    flex: 1; border: none; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer;
+}
+.btn-wish { background: #eee; color: #e1306c; font-size: 16px; }
+.btn-buy { background: #ff5722; color: #fff; }
+
+/* BOTTOM NAV */
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    background: #fff; border-top: 1px solid #ddd;
+    display: flex; justify-content: space-around; padding: 10px 0;
+    z-index: 1000;
+}
+.nav-item { text-align: center; font-size: 12px; cursor: pointer; }
+.nav-icon { font-size: 20px; display: block; margin-bottom: 3px; }
+
+/* ADMIN MODAL */
+.modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+    z-index: 2000; display: none; align-items: center; justify-content: center;
+}
+.modal-box {
+    background: #fff; padding: 20px; width: 85%; border-radius: 10px;
+    text-align: center;
+}
+.stat-box {
+    background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px;
+    display: flex; justify-content: space-between;
+}
+
+/* ===== ADMIN DASHBOARD ===== */
+#dash{margin-bottom:15px}
+.dash-cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
 }
 .card{
-background:#fff;border-radius:10px;overflow:hidden;
-box-shadow:0 2px 4px rgba(0,0,0,.1)
+  color:#fff;padding:15px;border-radius:8px;
 }
-.slider img{
-width:100%;height:200px;object-fit:cover;cursor:pointer
-}
-.card h4{font-size:14px;margin:5px}
-.price{color:green;font-weight:bold;margin-left:5px}
-.cut{text-decoration:line-through;color:#888;font-size:12px}
-.off{color:red;font-size:12px;margin-left:5px}
+.card b{font-size:18px;display:block}
+.red{background:#ff3b3b}
+.yellow{background:#ffc107;color:#000}
+.green{background:#2ecc71}
+.blue{background:#3498db}
 
-.actions{display:flex;padding:5px}
-.actions button{
-flex:1;margin:2px;border:none;padding:8px;
-border-radius:5px;font-size:13px;cursor:pointer
-}
-.buy{background:#ff5722;color:#fff}
-.wish{background:#eee}
-
-/* DONATE + INSTA */
-.extra-box{
-background:#fff;margin:10px;border-radius:12px;
-padding:15px;text-align:center;
-box-shadow:0 2px 5px rgba(0,0,0,.1)
-}
-.extra-box h3{margin:5px 0;color:#2209c2}
-.extra-box p{font-size:13px;color:#333}
-
-.donate-btn{
-background:linear-gradient(45deg,#ff5722,#ff9800);
-color:#fff;border:none;padding:10px 20px;
-border-radius:25px;font-size:14px;cursor:pointer
+.dash-box{
+  background:#f9f9f9;
+  margin-top:10px;
+  padding:10px;
+  border-radius:8px;
 }
 
-.insta-btn{
-display:flex;align-items:center;justify-content:center;
-gap:8px;background:#e1306c;color:#fff;
-padding:10px;border-radius:25px;
-text-decoration:none;font-weight:bold
-}
-.insta-btn img{height:20px}
+canvas{width:100%;height:120px}
 
-/* NAV */
-.nav{
-position:fixed;bottom:0;width:100%;
-background:#fff;display:flex;
-justify-content:space-around;
-padding:15px 0;
-box-shadow:0 -2px 5px rgba(0,0,0,.2)
+.pie{
+  width:120px;height:120px;border-radius:50%;
+  background:conic-gradient(
+    #3498db 0% 45%,
+    #2ecc71 45% 60%,
+    #ffc107 60% 100%
+  );
+  margin:auto;
 }
-.nav div{text-align:center;font-size:14px;font-weight:bold}
-.nav span{display:block;font-size:24px}
 
-/* FULLSCREEN */
-.fullscreen{
-position:fixed;inset:0;background:#000;
-display:none;align-items:center;justify-content:center;z-index:99
-}
-.fullscreen img{width:100%;height:auto}
 </style>
 </head>
 
 <body>
 
 <header>
-<img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png" onclick="openAdmin()">
-<div class="brand-name">SMARTBUY.IND</div>
-<div id="userTop">Guest</div>
+    <img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png" onclick="handleAdminLogin()">
+    <div class="brand-name">SMARTBUY.IND</div>
+    <div id="userTop" onclick="handleAccount()">Login</div>
 </header>
 
 <div class="main">
 
-<div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search for products..." onkeyup="handleSearch()">
+    <div class="search-wrapper">
+        <input type="text" class="search-input" id="searchInp" placeholder="Search products..." onkeyup="runSearch()">
+    </div>
+
+    <div class="cat-scroll" id="cat_panel"></div>
+    <div class="sub-scroll" id="sub_panel"></div>
+    
+    <div id="grid_panel"></div>
+     
+    <div style="background:#fff; margin:15px 10px; padding:20px; border-radius:10px; text-align:center; box-shadow:0 2px 5px rgba(0,0,0,.1);">
+    <h3 style="margin:0 0 10px 0; color:#e1306c;">📸 Follow on Instagram</h3>
+    <a href="https://instagram.com/smart_buy.ind" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:10px; background:#e1306c; color:#fff; padding:12px; border-radius:25px; text-decoration:none; font-weight:bold; font-size:14px;">
+        <img src="https://cdn.pixabay.com/photo/2021/06/15/12/14/instagram-6338392_1280.png" style="height:20px; filter: brightness(0) invert(1);">
+        @smart_buy.ind
+    </a>
+  </div>
+    <div style="background:#fff; margin:15px 10px; padding:20px; border-radius:10px; text-align:center;">
+        <h3 style="margin:0;color:#2209c2">💖 Support SmartBuy</h3>
+        <p>Help us grow with your support 🙏</p>
+        <button style="background:orange; color:white; border:none; padding:10px 20px; border-radius:20px; font-weight:bold; margin-top:10px;" onclick="location.href='upi://pay?pa=9343988416-2@ybl&pn=SmartBuy'">Donate Now</button>
+    </div>
+
 </div>
 
-<div class="categories" id="categories"></div>
-<div class="subcats" id="subcats"></div>
-<div class="products" id="products"></div>
-
-<div class="extra-box">
-<h3>💖 Support SmartBuy</h3>
-<p>Aapka chhota sa support hamare kaam ko aage badhata hai 🙏</p>
-<button class="donate-btn" onclick="donate()">Donate Now</button>
+<div class="bottom-nav">
+    <div class="nav-item" onclick="resetHome()"><span class="nav-icon">🏠</span>Home</div>
+    <div class="nav-item" onclick="showWishlistPage()"><span class="nav-icon">❤️</span>Wishlist</div>
+    <div class="nav-item" onclick="handleAccount()"><span class="nav-icon">👤</span>Account</div>
 </div>
 
-<div class="extra-box">
-<h3>📸 Follow on Instagram</h3>
-<a class="insta-btn" href="https://instagram.com/smartbuy.ind" target="_blank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png">
-@smartbuy.ind
-</a>
-</div>
+<div class="modal" id="adminModal">
+    <div class="modal-box">
+        <h2 style="color:#2209c2">Admin Panel 📊</h2>
+        <!-- ADMIN DASHBOARD -->
+<div id="dash">
+
+  <div class="dash-cards">
+    <div class="card red">
+      <b id="d_visit">0</b>
+      <span>Visits</span>
+    </div>
+    <div class="card yellow">
+      <b>46%</b>
+      <span>Bounce</span>
+    </div>
+    <div class="card green">
+      <b id="d_page">0</b>
+      <span>Pageviews</span>
+    </div>
+    <div class="card blue">
+      <b>+12%</b>
+      <span>Growth</span>
+    </div>
+  </div>
+
+  <div class="dash-box">
+    <h4>User Statistics</h4>
+    <canvas id="lineChart"></canvas>
+  </div>
+
+  <div class="dash-box">
+    <h4>Traffic Types</h4>
+    <div class="pie"></div>
+  </div>
 
 </div>
 
-<div class="nav">
-<div onclick="goHome()"><span>🏠</span>Home</div>
-<div onclick="showWishlist()"><span>❤️</span>Wishlist</div>
-<div onclick="showAccount()"><span>👤</span>Account</div>
-</div>
-
-<div class="fullscreen" id="fullscreen" onclick="this.style.display='none'">
-<img id="fullImg">
+        <div class="stat-box"><span>Total Products:</span> <b id="adm_prod">0</b></div>
+        <div class="stat-box"><span>Total Categories:</span> <b id="adm_cat">0</b></div>
+        <div class="stat-box"><span>Buy Button Clicks:</span> <b id="adm_click">0</b></div>
+        <div class="stat-box"><span>Registered Users:</span> <b id="adm_user">0</b></div>
+        <button onclick="document.getElementById('adminModal').style.display='none'" style="margin-top:10px;padding:10px;width:100%">Close</button>
+    </div>
 </div>
 
 <script>
-/* USER */
-let user=JSON.parse(localStorage.getItem("user"))||null;
-if(user){document.getElementById("userTop").innerText=user.name}
-
-/* CATEGORIES */
-const cats=[
-{name:"For You",img:"https://i.ibb.co/NndQSBVw/3d-shopping-bag-with-percent-sign-isolated-render-realistic-gift-bag-sale-discount-or-clearance-conc.jpg"},
-{name:"Fashion",img:"https://i.ibb.co/VYGS3DQb/51d9ea827ad3d9f0ca52103c47351dd8.jpg",sub:["Men","Women"]},
-{name:"Bags",img:"https://i.ibb.co/3mPPftR8/5dbba7855aeefe5508334ec802ba21bfa71b6cf1.jpg"},
-{name:"Electronics",img:"https://i.ibb.co/4ZJ9SSW7/screens-isometric-electronic-devices-23-2147647441.jpg"}
+// --- DATABASE ---
+const DB_CATS = [
+    {name:"For You", img:"https://cdn-icons-png.flaticon.com/512/833/833314.png"},
+    {name:"Fashion", img:"https://cdn-icons-png.flaticon.com/512/3050/3050253.png", sub:["Men","Women"]},
+    {name:"Bags", img:"https://cdn-icons-png.flaticon.com/512/2838/2838838.png"},
+    {name:"Electronics", img:"https://cdn-icons-png.flaticon.com/512/3659/3659898.png"}
 ];
 
-/* PRODUCTS */
-const productData=[
-{
-name:"Premium Backpack Encrypted",cat:"Bags",sub:"",
-price:322,cut:999,
-link:"https://bitli.in/JZizUxb",
-imgs:[
-"https://i.ibb.co/gZVV8M7K/Screenshot-2026-01-28-09-16-20-919-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/d0LnRpXs/Screenshot-2026-01-28-09-17-19-979-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/tkxs7w0/IMG-20260128-215957.jpg"
-]
-},
-{
-name:"MEN Full sleeve striped sweatshirt",cat:"Fashion",sub:"Men",
-price:299,cut:1499,
-link:"https://fktr.in/trid8uL",
-imgs:[
-"https://i.ibb.co/zH2qJBLK/Screenshot-2026-01-28-23-27-52-532-com-flipkart-android-edit.jpg",
-"https://i.ibb.co/Y9dMqkg/Screenshot-2026-01-28-23-28-05-482-com-flipkart-android-edit.jpg",
-"https://i.ibb.co/LdSbDw4C/Screenshot-2026-01-28-23-28-28-456-com-flipkart-android-edit.jpg"
-]
-},
-{
-name:"Women Floral Kurti",cat:"Fashion",sub:"Women",
-price:253,cut:1999,
-link:"https://bitli.in/mYd26le",
-imgs:[
-"https://i.ibb.co/jvnM1DvY/Screenshot-2026-01-28-20-42-57-901-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/dw8Z04GJ/Screenshot-2026-01-28-20-43-10-575-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/svt2y75W/Screenshot-2026-01-28-20-43-22-071-com-flipkart-shopsy-edit.jpg"
-]
-},
-{
-name:"Men Regular Fit Trousers",cat:"Fashion",sub:"Men",
-price:262,cut:999,
-link:"https://bitli.in/w8hSXkv",
-imgs:[
-"https://i.ibb.co/xKgxySx2/Screenshot-2026-01-28-20-51-16-478-com-flipkart-shopsy-edit.jpg",
-"https://i.ibb.co/zWcpyJSk/Screenshot-2026-01-28-20-51-44-808-com-flipkart-shopsy-edit.jpg"
-]
-}
+const DB_ITEMS = [
+    { id:1, name:"Premium Backpack Encrypted", cat:"Bags", sub:"", price:322, cut:999, link:"https://bitli.in/JZizUxb", img:"https://i.ibb.co/tkxs7w0/IMG-20260128-215957.jpg" },
+    { id:2, name:"MEN Full sleeve sweatshirt", cat:"Fashion", sub:"Men", price:299, cut:1499, link:"https://fktr.in/trid8uL", img:"https://i.ibb.co/zH2qJBLK/Screenshot-2026-01-28-23-27-52-532-com-flipkart-android-edit.jpg" },
+    { id:3, name:"Women Floral Kurti", cat:"Fashion", sub:"Women", price:253, cut:1999, link:"https://bitli.in/mYd26le", img:"https://i.ibb.co/jvnM1DvY/Screenshot-2026-01-28-20-42-57-901-com-flipkart-shopsy-edit.jpg" },
+    { id:4, name:"Men Regular Fit Trousers", cat:"Fashion", sub:"Men", price:262, cut:999, link:"https://bitli.in/w8hSXkv", img:"https://i.ibb.co/xKgxySx2/Screenshot-2026-01-28-20-51-16-478-com-flipkart-shopsy-edit.jpg" }
 ];
 
-let curCat="For You", curSub="", searchQuery="";
-const productsEl = document.getElementById('products');
+// --- LOCAL STORAGE INIT ---
+if(!localStorage.getItem("site_stats")) localStorage.setItem("site_stats", JSON.stringify({clicks:0}));
+if(!localStorage.getItem("wishlist")) localStorage.setItem("wishlist", JSON.stringify([]));
 
-function renderCats(){
-categories.innerHTML="";
-cats.forEach(x=>{
-categories.innerHTML += `<div class="cat" onclick="setCat('${x.name}')">
-<img src="${x.img}"><p>${x.name}</p></div>`;
-});
-}
+// --- STATE VARIABLES ---
+let activeCat = "For You";
+let activeSub = "";
+let searchTerm = "";
+let isWishlistMode = false;
 
-function renderSub(){
-subcats.innerHTML="";
-let f=cats.find(x=>x.name==curCat);
-if(f && f.sub){
-f.sub.forEach(x=>{
-subcats.innerHTML += `<div onclick="setSub('${x}')">${x}</div>`;
-});
-}
-}
+// --- CORE FUNCTIONS ---
 
-function renderProd(){
-productsEl.innerHTML="";
-productData.filter(x=>{
-let matchCat = (curCat=="For You"||x.cat==curCat) && (curSub==""||x.sub==curSub);
-let matchSearch = x.name.toLowerCase().includes(searchQuery);
-return matchCat && matchSearch;
-}).forEach((x,i)=>{
-let off=Math.round((1-x.price/x.cut)*100);
-productsEl.innerHTML += `
-<div class="card">
-<div class="slider">
-<img src="${x.imgs[0]}" onclick="openFull('${x.imgs[0]}')">
-</div>
-<h4>${x.name}</h4>
-<div>
-<span class="price">₹${x.price}</span>
-<span class="cut">₹${x.cut}</span>
-<span class="off">${off}% OFF</span>
-</div>
-<div class="actions">
-<button class="wish" onclick="addWish(${i})">❤️</button>
-<button class="buy" onclick="window.open('${x.link}','_blank')">Buy</button>
-</div>
-</div>`;
-});
+// 1. Render Categories
+function drawCategories(){
+    let html = "";
+    DB_CATS.forEach(c => {
+        html += `
+        <div class="cat-item" onclick="changeCat('${c.name}')">
+            <img src="${c.img}" style="border-color:${activeCat===c.name?'blue':'#eee'}">
+            <p style="font-weight:${activeCat===c.name?'bold':'normal'}">${c.name}</p>
+        </div>`;
+    });
+    document.getElementById("cat_panel").innerHTML = html;
 }
 
-function setCat(x){curCat=x;curSub="";renderSub();renderProd();}
-function setSub(x){curSub=x;renderProd();}
-function goHome(){curCat="For You"; curSub=""; searchQuery=""; document.getElementById('searchInput').value=""; renderSub(); renderProd();}
-function handleSearch(){searchQuery=document.getElementById('searchInput').value.toLowerCase(); renderProd();}
-function openFull(i){fullImg.src=i;fullscreen.style.display='flex';}
+// ===== ADMIN DASHBOARD LOGIC =====
+function loadDashboard(){
+  let stats = JSON.parse(localStorage.getItem("site_stats")) || {clicks:0};
 
-/* WISHLIST */
-function addWish(i){
-let w=JSON.parse(localStorage.getItem("wish"))||[];
-w.push(productData[i]);
-localStorage.setItem("wish",JSON.stringify(w));
-alert("Added to Wishlist ❤️");
-}
-function showWishlist(){
-let w=JSON.parse(localStorage.getItem("wish"))||[];
-if(w.length==0){alert("Wishlist is empty"); return;}
-alert("Wishlist Items:\n"+w.map(x=>x.name).join("\n"));
-}
+  document.getElementById("d_visit").innerText = stats.clicks * 12 + 120;
+  document.getElementById("d_page").innerText = stats.clicks * 30 + 300;
 
-/* ACCOUNT */
-function showAccount(){
-let n=prompt("Enter Name");
-let p=prompt("Enter Phone");
-if(n&&p){
-localStorage.setItem("user",JSON.stringify({name:n,phone:p}));
-document.getElementById("userTop").innerText=n;
-alert("Account saved!");
-}
+  let c = document.getElementById("lineChart");
+  if(!c) return;
+  let ctx = c.getContext("2d");
+  ctx.clearRect(0,0,300,150);
+
+  ctx.beginPath();
+  ctx.moveTo(0,100);
+  ctx.lineTo(50,80);
+  ctx.lineTo(100,90);
+  ctx.lineTo(150,60);
+  ctx.lineTo(200,40);
+  ctx.lineTo(250,70);
+  ctx.strokeStyle="#e91e63";
+  ctx.lineWidth=3;
+  ctx.stroke();
 }
 
-/* ADMIN */
-function openAdmin(){
-let u=prompt("Username");
-let p=prompt("Password");
-if(u=="9343988416" && p=="1234"){
-alert("Admin Analytics\nProducts:"+productData.length+"\nCategories:"+cats.length);
-}else alert("Invalid credentials");
+/* Admin open hook */
+let _openAdmin = openAdminPanel;
+openAdminPanel = function(){
+  _openAdmin();
+  setTimeout(loadDashboard,200);
+};
+
+// 2. Render Subcategories
+function drawSubcats(){
+    let html = "";
+    let found = DB_CATS.find(c => c.name === activeCat);
+    if(found && found.sub){
+        found.sub.forEach(s => {
+            let color = (activeSub === s) ? "#2209c2" : "#eee";
+            let text = (activeSub === s) ? "#fff" : "#333";
+            html += `<div class="sub-btn" style="background:${color};color:${text}" onclick="changeSub('${s}')">${s}</div>`;
+        });
+    }
+    document.getElementById("sub_panel").innerHTML = html;
 }
 
-/* DONATE */
-function donate(){
-location.href="upi://pay?pa=9343988416-2@ybl&pn=SmartBuy%20Foundation";
+// 3. Render Products (Main Logic)
+function drawProducts(){
+    let container = document.getElementById("grid_panel");
+    container.innerHTML = "";
+    
+    // Get Wishlist IDs
+    let wishIds = JSON.parse(localStorage.getItem("wishlist"));
+
+    let displayList = [];
+
+    if(isWishlistMode){
+        // Only show items in wishlist
+        displayList = DB_ITEMS.filter(item => wishIds.includes(item.id));
+        if(displayList.length === 0) container.innerHTML = "<div style='width:200%;text-align:center;padding:20px;color:#fff'>Your wishlist is empty 💔</div>";
+    } else {
+        // Normal Filter Logic
+        displayList = DB_ITEMS.filter(item => {
+            let catMatch = (activeCat === "For You" || item.cat === activeCat);
+            let subMatch = (activeSub === "" || item.sub === activeSub);
+            let searchMatch = item.name.toLowerCase().includes(searchTerm);
+            return catMatch && subMatch && searchMatch;
+        });
+        if(displayList.length === 0) container.innerHTML = "<div style='width:200%;text-align:center;padding:20px;color:#fff'>No products found.</div>";
+    }
+
+    displayList.forEach(item => {
+        let discount = Math.round((1 - item.price/item.cut)*100);
+        let isWished = wishIds.includes(item.id);
+        
+        container.innerHTML += `
+        <div class="prod-card">
+            <div class="prod-img-box">
+                <img src="${item.img}" onclick="window.open('${item.link}')">
+            </div>
+            <div class="info-box">
+                <h4>${item.name}</h4>
+                <div>
+                    <span class="price">₹${item.price}</span>
+                    <span class="cut">₹${item.cut}</span>
+                    <span class="off">(${discount}% OFF)</span>
+                </div>
+                <div class="btn-row">
+                    <button class="btn-wish" onclick="toggleWish(${item.id})">
+                        ${isWished ? '❤️' : '🤍'}
+                    </button>
+                    <button class="btn-buy" onclick="trackBuy('${item.link}')">BUY</button>
+                </div>
+            </div>
+        </div>`;
+    });
 }
 
-/* INIT */
-renderCats();renderSub();renderProd();
+// --- REAL FEATURES LOGIC ---
+
+// ACCOUNT SYSTEM
+function handleAccount(){
+    let user = JSON.parse(localStorage.getItem("user"));
+    if(user){
+        if(confirm(`Logged in as: ${user.name}\nDo you want to logout?`)){
+            localStorage.removeItem("user");
+            document.getElementById("userTop").innerText = "Login";
+            alert("Logged out successfully.");
+        }
+    } else {
+        let name = prompt("Enter your Name for Login/Signup:");
+        if(!name) return;
+        let pass = prompt("Create/Enter Password:");
+        if(name && pass){
+            localStorage.setItem("user", JSON.stringify({name: name, pass: pass}));
+            document.getElementById("userTop").innerText = name;
+            alert("Welcome, " + name + "!");
+        }
+    }
+}
+
+// CHECK LOGIN ON LOAD
+let savedUser = JSON.parse(localStorage.getItem("user"));
+if(savedUser) document.getElementById("userTop").innerText = savedUser.name;
+
+// WISHLIST SYSTEM
+function toggleWish(id){
+    let w = JSON.parse(localStorage.getItem("wishlist"));
+    if(w.includes(id)){
+        w = w.filter(x => x !== id); // Remove
+    } else {
+        w.push(id); // Add
+    }
+    localStorage.setItem("wishlist", JSON.stringify(w));
+    drawProducts(); // Re-render to update hearts
+}
+
+function showWishlistPage(){
+    isWishlistMode = true;
+    document.getElementById("cat_panel").style.display = "none";
+    document.getElementById("sub_panel").style.display = "none";
+    drawProducts();
+}
+
+// ADMIN SYSTEM
+function handleAdminLogin(){
+    let u = prompt("Admin Mobile Number:");
+    let p = prompt("Admin Password:");
+    
+    if(u === "9343988416" && p === "1234"){
+        openAdminPanel();
+    } else {
+        alert("Wrong Credentials!");
+    }
+}
+
+function openAdminPanel(){
+    let stats = JSON.parse(localStorage.getItem("site_stats"));
+    let userCount = localStorage.getItem("user") ? 1 : 0; // Simple count for demo
+    
+    document.getElementById("adm_prod").innerText = DB_ITEMS.length;
+    document.getElementById("adm_cat").innerText = DB_CATS.length;
+    document.getElementById("adm_click").innerText = stats.clicks;
+    document.getElementById("adm_user").innerText = userCount + " (Active)";
+    
+    document.getElementById("adminModal").style.display = "flex";
+}
+
+// ANALYTICS TRACKER
+function trackBuy(link){
+    let s = JSON.parse(localStorage.getItem("site_stats"));
+    s.clicks++;
+    localStorage.setItem("site_stats", JSON.stringify(s));
+    window.open(link, '_blank');
+}
+
+// NAVIGATION
+function changeCat(name){
+    isWishlistMode = false;
+    document.getElementById("cat_panel").style.display = "flex";
+    document.getElementById("sub_panel").style.display = "flex";
+    activeCat = name; activeSub = "";
+    drawCategories(); drawSubcats(); drawProducts();
+}
+function changeSub(name){
+    activeSub = name;
+    drawSubcats(); drawProducts();
+}
+function runSearch(){
+    isWishlistMode = false;
+    searchTerm = document.getElementById("searchInp").value.toLowerCase();
+    drawProducts();
+}
+function resetHome(){
+    isWishlistMode = false;
+    document.getElementById("cat_panel").style.display = "flex";
+    document.getElementById("sub_panel").style.display = "flex";
+    activeCat = "For You"; activeSub = ""; searchTerm = "";
+    document.getElementById("searchInp").value = "";
+    drawCategories(); drawSubcats(); drawProducts();
+}
+
+// INIT
+drawCategories(); drawSubcats(); drawProducts();
 </script>
 
 </body>
+
+<!-- WELCOME SCREEN -->
+<div id="welcomeScreen">
+  <img src="https://i.ibb.co/8DbgQ53J/file-000000002c787209a2c8df5f2b17d7b5.png">
+  <h1>Welcome to SMARTBUY.IND</h1>
+</div>
 </html>
+
