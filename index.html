@@ -5,6 +5,9 @@
 <title>SMARTBUY.IND</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Manifest file link -->
+    <link rel="manifest" href="manifest.json"
+
 <style>
 /* --- CSS RESET & COLORS --- */
 body{margin:0;font-family:Arial, sans-serif;background-color:#0d0dde; color:#333;}
@@ -546,6 +549,11 @@ function resetHome(){
 
 // INIT
 drawCategories(); drawSubcats(); drawProducts();
+
+  <!-- Service Worker Register Script -->
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+      .then(() => console.log('Service Worker Registered'));
 </script>
 
 </body>
@@ -556,4 +564,5 @@ drawCategories(); drawSubcats(); drawProducts();
   <h1>Welcome to SMARTBUY.IND</h1>
 </div>
 </html>
+
 
