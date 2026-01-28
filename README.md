@@ -1,0 +1,2 @@
+# Smartbuy.ind
+shopping platform
