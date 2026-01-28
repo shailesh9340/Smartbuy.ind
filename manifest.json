@@ -1,0 +1,20 @@
+{
+  "name": "Smartbuy.ind",
+  "short_name": "Smartbuy",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d0dde",
+  "icons": [
+    {
+      "src": "<img src="https://i.ibb.co/21h3p5NM/file-000000002c787209a2c8df5f2b17d7b5.png" alt="file 000000002c787209a2c8df5f2b17d7b5" border="0">",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "<img src="https://i.ibb.co/21h3p5NM/file-000000002c787209a2c8df5f2b17d7b5.png" alt="file 000000002c787209a2c8df5f2b17d7b5" border="0">",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
